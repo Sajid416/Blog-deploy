@@ -17,7 +17,7 @@ const MyBlog = () => {
         console.log("please enter token first");
         return;
       }
-      const res = await axios.get("http://localhost:8080/api/myblog", {
+      const res = await axios.get(`${process.env.REACT_APP_BLOG_API}/api/myblog`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -32,7 +32,7 @@ const MyBlog = () => {
   // Delete blog
   const handleDelete = async (id) => {
     try {
-      await axios.delete(`http://localhost:8080/api/myblog/${id}`, {
+      await axios.delete(`${process.env.REACT_APP_BLOG_API}/api/myblog/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFilterData((prev) => prev.filter((item) => item.id !== id));

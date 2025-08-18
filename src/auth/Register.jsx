@@ -17,7 +17,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     try{
-      const res=await fetch("http://localhost:8001/register",{
+      const res=await fetch(`${process.env.REACT_APP_AUTH_API}/register`,{
         method:"POST",
         headers:{"content-type":"application/json"},
         body: JSON.stringify(data)

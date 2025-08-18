@@ -22,7 +22,7 @@ const SearchBar = React.memo(({ query, setQuery, suggestions, setSuggestions, se
       }
       try {
         const res = await axios.get(
-          `http://localhost:8080/blogs/search?title=${query}`
+          `${process.env.REACT_APP_BLOG_API}/blogs/search?title=${query}`
         );
         setSuggestions(res.data);
       } catch (error) {

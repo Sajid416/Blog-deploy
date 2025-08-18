@@ -33,7 +33,7 @@ export const DataProvider = ({ children }) => {
   
     const fetchData = useCallback(async () => {
       try {
-        const apiUrl = "http://localhost:8080";
+        const apiUrl = `${process.env.REACT_APP_BLOG_API}`;
         const response = await axios.get(apiUrl);
         if (response.status === 200) {
           if (response.data.StatusText === "OK") {

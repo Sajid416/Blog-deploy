@@ -48,7 +48,7 @@ const UpdateBlog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`http://localhost:8080/api/getone/${id}`, {
+        const res = await axios.get(`${process.env.REACT_APP_BLOG_API}/api/getone/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -91,7 +91,7 @@ const UpdateBlog = () => {
 
     try {
       const res = await axios.post(
-        "http://localhost:8080/api/upload",
+        `${process.env.REACT_APP_BLOG_API}/api/upload`,
         formData,
         {
           headers: {
@@ -127,7 +127,7 @@ const UpdateBlog = () => {
       formData.append("authorName", data.authorName);
       formData.append("details", data.details);
 
-      const res = await axios.put(`http://localhost:8080/api/update/${id}`, formData, {
+      const res = await axios.put(`${process.env.REACT_APP_BLOG_API}/api/update/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

@@ -13,7 +13,7 @@ const Add = () => {
   const onSubmit = async (data) => {
     console.log(data);
     try {
-      const apiUrl = "http://localhost:8080";
+      const apiUrl = `${process.env.REACT_APP_BLOG_API}`;
       const res = await axios.post(apiUrl, data);
       if (res.status == 200) {
         console.log("Blog Submitted", res.data);

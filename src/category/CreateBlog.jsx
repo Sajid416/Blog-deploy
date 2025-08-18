@@ -59,7 +59,7 @@ const CreateBlog = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post("http://localhost:8080/api/upload", formData, {
+      const res = await axios.post(`${process.env.REACT_APP_BLOG_API}/api/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: token ? `Bearer ${token}` : "",
@@ -94,7 +94,7 @@ const CreateBlog = () => {
       formData.append("authorName", data.authorName);
       formData.append("details", data.details); // ✅ include Quill details
 
-      const res = await axios.post("http://localhost:8080/api", formData, {
+      const res = await axios.post(`${process.env.REACT_APP_BLOG_API}/api`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",
