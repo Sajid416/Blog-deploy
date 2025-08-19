@@ -127,7 +127,7 @@ const UpdateBlog = () => {
       formData.append("authorName", data.authorName);
       formData.append("details", data.details);
       const API="https://blog-blogapi-service.onrender.com"
-      const res = await axios.put(`${process.env.REACT_APP_BLOG_API}/api/update/${id}`, formData, {
+      const res = await axios.put(`${API}/api/update/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

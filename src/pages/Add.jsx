@@ -14,7 +14,7 @@ const Add = () => {
     const API="https://blog-blogapi-service.onrender.com"
     console.log(data);
     try {
-      const apiUrl = `${process.env.REACT_APP_BLOG_API}`;
+      const apiUrl = `${API}`;
       const res = await axios.post(apiUrl, data);
       if (res.status == 200) {
         console.log("Blog Submitted", res.data);

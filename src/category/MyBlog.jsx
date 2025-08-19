@@ -34,7 +34,7 @@ const MyBlog = () => {
   const handleDelete = async (id) => {
     const API="https://blog-blogapi-service.onrender.com"
     try {
-      await axios.delete(`${process.env.REACT_APP_BLOG_API}/api/myblog/${id}`, {
+      await axios.delete(`${API}/api/myblog/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFilterData((prev) => prev.filter((item) => item.id !== id));
