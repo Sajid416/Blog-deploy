@@ -20,10 +20,10 @@ const Login = () => {
     return strongPasswordRegex.test(value) || 
       "Password must be at least 6 characters, include uppercase, lowercase, number, and special character.";
   };
-
+  const API = "https://blog-authapi-service.onrender.com";
   const onSubmit = async (data) => {
     try{
-      const res=await fetch(`${process.env.REACT_APP_AUTH_API}/login`,{
+      const res=await fetch(`${API}/login`,{
         method:"POST",
         headers:{"Content-Type":"application/json"},
         body:JSON.stringify(data)

@@ -13,13 +13,11 @@ const Register = () => {
   } = useForm();
   const [loading, setLoading] = useState(false);
   const password = watch("password");
-
+  const API = "https://blog-authapi-service.onrender.com";
   const onSubmit = async (data) => {
     setLoading(true)
-    console.log("Auth API URL:", process.env.REACT_APP_AUTH_API);
-
     try{
-      const res=await fetch(`${process.env.REACT_APP_AUTH_API}/register`,{
+      const res=await fetch(`{API}/register`,{
         method:"POST",
         headers:{"content-type":"application/json"},
         body: JSON.stringify(data)
