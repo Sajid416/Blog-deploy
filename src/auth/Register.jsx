@@ -38,6 +38,7 @@ const Register = () => {
     }
     catch(error){
       console.error(error)
+      console.log("Auth API URL:", process.env.REACT_APP_AUTH_API);
       alert("Something went wrong")
     }
     setLoading(false)
