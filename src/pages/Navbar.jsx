@@ -14,7 +14,7 @@ import { MdOutlineCancel } from "react-icons/md";
 
 
 const ProfileDropdown=()=>{
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
   
   const dropdownRef = useRef(null);
   // Close dropdown if clicked outside
