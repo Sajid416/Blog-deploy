@@ -17,7 +17,7 @@ const Register = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     try{
-      const res=await fetch(`{API}/register`,{
+      const res=await fetch(`${API}/register`,{
         method:"POST",
         headers:{"content-type":"application/json"},
         body: JSON.stringify(data)
@@ -36,7 +36,7 @@ const Register = () => {
     }
     catch(error){
       console.error(error)
-      console.log("Auth API URL:", process.env.REACT_APP_AUTH_API);
+      console.log("Auth API URL:", API);
       alert("Something went wrong")
     }
     setLoading(false)
