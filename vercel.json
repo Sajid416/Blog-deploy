@@ -1,0 +1,26 @@
+{
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "build" }
+    }
+  ],
+  "routes": [
+    { "src": "/", "dest": "/index.html" },
+    { "src": "/details/.*", "dest": "/index.html" },
+    { "src": "/services", "dest": "/index.html" },
+    { "src": "/add", "dest": "/index.html" },
+    { "src": "/about", "dest": "/index.html" },
+    { "src": "/contact", "dest": "/index.html" },
+    { "src": "/all", "dest": "/index.html" },
+    { "src": "/login", "dest": "/index.html" },
+    { "src": "/register", "dest": "/index.html" },
+    { "src": "/blog/create", "dest": "/index.html" },
+    { "src": "/blog/myblog", "dest": "/index.html" },
+    { "src": "/blog/update/.*", "dest": "/index.html" },
+    { "src": "/blog/delete/.*", "dest": "/index.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}
