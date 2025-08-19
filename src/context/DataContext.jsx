@@ -32,6 +32,7 @@ export const DataProvider = ({ children }) => {
 
   
     const fetchData = useCallback(async () => {
+      const API="https://blog-blogapi-service.onrender.com"
       try {
         const apiUrl = `${process.env.REACT_APP_BLOG_API}`;
         const response = await axios.get(apiUrl);

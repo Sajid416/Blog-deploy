@@ -14,6 +14,7 @@ function sanitizeDetails(details) {
 }
 
 const SearchBar = React.memo(({ query, setQuery, suggestions, setSuggestions, setSelectedBlogs, selected, setSelected }) => {
+  const API="https://blog-blogapi-service.onrender.com"
   useEffect(() => {
     const fetchData = async () => {
       if (query.trim() === "") {
@@ -22,7 +23,7 @@ const SearchBar = React.memo(({ query, setQuery, suggestions, setSuggestions, se
       }
       try {
         const res = await axios.get(
-          `${process.env.REACT_APP_BLOG_API}/blogs/search?title=${query}`
+          `${API}/blogs/search?title=${query}`
         );
         setSuggestions(res.data);
       } catch (error) {

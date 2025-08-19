@@ -12,12 +12,13 @@ const MyBlog = () => {
 
   // Fetch user blogs
   const handledata = async () => {
+    const API="https://blog-blogapi-service.onrender.com"
     try {
       if (!token) {
         console.log("please enter token first");
         return;
       }
-      const res = await axios.get(`${process.env.REACT_APP_BLOG_API}/api/myblog`, {
+      const res = await axios.get(`${API}/api/myblog`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -31,6 +32,7 @@ const MyBlog = () => {
 
   // Delete blog
   const handleDelete = async (id) => {
+    const API="https://blog-blogapi-service.onrender.com"
     try {
       await axios.delete(`${process.env.REACT_APP_BLOG_API}/api/myblog/${id}`, {
         headers: { Authorization: `Bearer ${token}` },

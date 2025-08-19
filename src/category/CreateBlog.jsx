@@ -50,6 +50,7 @@ const CreateBlog = () => {
 
   // Upload image function
   const uploadImage = async (e, fieldName, setUploading) => {
+    const API="https://blog-blogapi-service.onrender.com"
     const file = e.target.files[0];
     if (!file) return;
 
@@ -59,7 +60,7 @@ const CreateBlog = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await axios.post(`${process.env.REACT_APP_BLOG_API}/api/upload`, formData, {
+      const res = await axios.post(`${API}/api/upload`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
           Authorization: token ? `Bearer ${token}` : "",
@@ -77,6 +78,7 @@ const CreateBlog = () => {
 
   // Submit handler
   const onSubmit = async (data) => {
+    const API="https://blog-blogapi-service.onrender.com"
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -94,7 +96,7 @@ const CreateBlog = () => {
       formData.append("authorName", data.authorName);
       formData.append("details", data.details); // ✅ include Quill details
 
-      const res = await axios.post(`${process.env.REACT_APP_BLOG_API}/api`, formData, {
+      const res = await axios.post(`${API}/api`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

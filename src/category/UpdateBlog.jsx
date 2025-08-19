@@ -43,12 +43,12 @@ const UpdateBlog = () => {
       });
     }
   }, [quill, setValue]);
-
+ const API="https://blog-blogapi-service.onrender.com"
   // Fetch blog data on mount
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_BLOG_API}/api/getone/${id}`, {
+        const res = await axios.get(`${API}/api/getone/${id}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -84,14 +84,14 @@ const UpdateBlog = () => {
   const uploadImage = async (e, fieldName, setUploading) => {
     const file = e.target.files[0];
     if (!file) return;
-
+   const API="https://blog-blogapi-service.onrender.com"
     setUploading(true);
     const formData = new FormData();
     formData.append("image", file);
 
     try {
       const res = await axios.post(
-        `${process.env.REACT_APP_BLOG_API}/api/upload`,
+        `${API}/api/upload`,
         formData,
         {
           headers: {
@@ -126,7 +126,7 @@ const UpdateBlog = () => {
       formData.append("authorImg", data.authorImg);
       formData.append("authorName", data.authorName);
       formData.append("details", data.details);
-
+      const API="https://blog-blogapi-service.onrender.com"
       const res = await axios.put(`${process.env.REACT_APP_BLOG_API}/api/update/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,

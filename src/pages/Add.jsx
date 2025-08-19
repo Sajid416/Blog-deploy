@@ -11,6 +11,7 @@ const Add = () => {
   } = useForm();
   const navigate = useNavigate();
   const onSubmit = async (data) => {
+    const API="https://blog-blogapi-service.onrender.com"
     console.log(data);
     try {
       const apiUrl = `${process.env.REACT_APP_BLOG_API}`;
