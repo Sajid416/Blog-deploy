@@ -16,6 +16,8 @@ const Register = () => {
 
   const onSubmit = async (data) => {
     setLoading(true)
+    console.log("Auth API URL:", process.env.REACT_APP_AUTH_API);
+
     try{
       const res=await fetch(`${process.env.REACT_APP_AUTH_API}/register`,{
         method:"POST",
