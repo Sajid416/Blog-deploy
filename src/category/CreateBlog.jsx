@@ -1,26 +1,17 @@
-import axios from "axios";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { DataContext } from "../context/DataContext";
-import { useContext, useState, useEffect } from "react";
 import { useQuill } from "react-quilljs";
 import "quill/dist/quill.snow.css";
+import axios from "axios";
+import { DataContext } from "../context/DataContext";
 
 const CreateBlog = () => {
   const navigate = useNavigate();
   const { fetchData } = useContext(DataContext);
 
-  const {
-    register,
-    setValue,
-    watch,
-    formState: { errors },
-    reset,
-    handleSubmit,
-  } = useForm({
-    defaultValues: {
-      details: "", // initialize details field
-    },
+  const { register, setValue, watch, formState: { errors }, reset, handleSubmit } = useForm({
+    defaultValues: { details: "" }
   });
 
   // Quill editor
@@ -38,7 +29,6 @@ const CreateBlog = () => {
   // Image uploads
   const [uploadingBlogImg, setUploadingBlogImg] = useState(false);
   const [uploadingAuthorImg, setUploadingAuthorImg] = useState(false);
-
   const [blogImgPreview, setBlogImgPreview] = useState("");
   const [authorImgPreview, setAuthorImgPreview] = useState("");
 
@@ -48,9 +38,9 @@ const CreateBlog = () => {
   useEffect(() => setBlogImgPreview(imgUrl || ""), [imgUrl]);
   useEffect(() => setAuthorImgPreview(authorImg || ""), [authorImg]);
 
-  // Upload image function
+  const API = "https://blog-blogapi-service.onrender.com";
+
   const uploadImage = async (e, fieldName, setUploading) => {
-    const API="https://blog-blogapi-service.onrender.com"
     const file = e.target.files[0];
     if (!file) return;
 
@@ -66,7 +56,6 @@ const CreateBlog = () => {
           Authorization: token ? `Bearer ${token}` : "",
         },
       });
-
       setValue(fieldName, res.data.url, { shouldValidate: true });
     } catch (error) {
       alert("Image upload failed");
@@ -76,9 +65,7 @@ const CreateBlog = () => {
     }
   };
 
-  // Submit handler
   const onSubmit = async (data) => {
-    const API="https://blog-blogapi-service.onrender.com"
     try {
       const token = localStorage.getItem("token");
       if (!token) {
@@ -87,14 +74,13 @@ const CreateBlog = () => {
         return;
       }
 
-      // Create FormData to include all fields, including details
       const formData = new FormData();
       formData.append("title", data.title);
       formData.append("category", data.category);
       formData.append("imgUrl", data.imgUrl);
       formData.append("authorImg", data.authorImg);
       formData.append("authorName", data.authorName);
-      formData.append("details", data.details); // ✅ include Quill details
+      formData.append("details", data.details);
 
       const res = await axios.post(`${API}/api`, formData, {
         headers: {
@@ -111,7 +97,7 @@ const CreateBlog = () => {
       }
     } catch (error) {
       if (error.response?.status === 401) {
-        alert("Your session has expired. Please log in again.");
+        alert("Session expired. Please log in again.");
         localStorage.removeItem("token");
         navigate("/login");
       } else {
@@ -122,64 +108,30 @@ const CreateBlog = () => {
   };
 
   return (
-    <div>
-      <h1 className="text-center text-3xl sm:text-4xl font-bold font-pacifico">
-        Create Blog
-      </h1>
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className="max-w-2xl mx-auto p-8 my-5 bg-gray-100 rounded shadow-lg space-y-4"
-      >
-        {/* Blog Image + upload */}
+    <div className="p-4">
+      <h1 className="text-center text-3xl font-bold mb-4">Create Blog</h1>
+      <form onSubmit={handleSubmit(onSubmit)} className="max-w-2xl mx-auto p-6 bg-gray-100 rounded shadow-lg space-y-4">
+        
+        {/* Blog Image */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Blog Image URL <span className="text-red-500">*</span>
-          </label>
-          <input
-            {...register("imgUrl", { required: "Image URL is required" })}
-            className="border border-gray-500 px-3 py-2 rounded-md w-full"
-            placeholder="Paste image URL or upload"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => uploadImage(e, "imgUrl", setUploadingBlogImg)}
-            className="mt-2"
-          />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Blog Image <span className="text-red-500">*</span></label>
+          <input {...register("imgUrl", { required: "Image URL is required" })} placeholder="Paste image URL" className="border px-3 py-2 rounded w-full" />
+          <input type="file" accept="image/*" onChange={(e) => uploadImage(e, "imgUrl", setUploadingBlogImg)} className="mt-2" />
           {uploadingBlogImg && <p>Uploading image...</p>}
-          {blogImgPreview && (
-            <img
-              src={blogImgPreview}
-              alt="Blog Preview"
-              className="mt-2 max-h-48 object-contain"
-            />
-          )}
+          {blogImgPreview && <img src={blogImgPreview} alt="Blog Preview" className="mt-2 max-h-48 object-contain" />}
         </div>
 
         {/* Title */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Title <span className="text-red-500">*</span>
-          </label>
-          <input
-            {...register("title", { required: "Title is required" })}
-            className="border border-gray-500 px-3 py-2 rounded-md w-full"
-            placeholder="Enter blog title"
-          />
-          {errors.title && (
-            <p className="text-red-500 text-sm">{errors.title.message}</p>
-          )}
+          <label className="block text-sm font-medium text-gray-700 mb-1">Title <span className="text-red-500">*</span></label>
+          <input {...register("title", { required: "Title is required" })} placeholder="Enter blog title" className="border px-3 py-2 rounded w-full" />
+          {errors.title && <p className="text-red-500 text-sm">{errors.title.message}</p>}
         </div>
 
         {/* Category */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Category <span className="text-red-500">*</span>
-          </label>
-          <select
-            {...register("category", { required: "Category is required" })}
-            className="border border-gray-500 px-3 py-2 rounded-md w-full"
-          >
+          <label className="block text-sm font-medium text-gray-700 mb-1">Category <span className="text-red-500">*</span></label>
+          <select {...register("category", { required: "Category is required" })} className="border px-3 py-2 rounded w-full">
             <option value="">-- Choose a category --</option>
             <option value="Technology">Technology</option>
             <option value="Food">Food</option>
@@ -188,69 +140,33 @@ const CreateBlog = () => {
             <option value="Sports">Sports</option>
             <option value="Travel">Travel</option>
           </select>
-          {errors.category && (
-            <p className="text-red-500 text-sm">{errors.category.message}</p>
-          )}
+          {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
         </div>
 
-        {/* Blog Details */}
+        {/* Details */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Blog Details <span className="text-red-500">*</span>
-          </label>
-          <div ref={quillRef} />
-          {errors.details && (
-            <p className="text-red-500 text-sm">{errors.details.message}</p>
-          )}
+          <label className="block text-sm font-medium text-gray-700 mb-1">Blog Details <span className="text-red-500">*</span></label>
+          <div ref={quillRef} className="bg-white p-2 rounded border" />
+          {errors.details && <p className="text-red-500 text-sm">{errors.details.message}</p>}
         </div>
 
-        {/* Author Image + upload */}
+        {/* Author Image */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Author Image URL <span className="text-red-500">*</span>
-          </label>
-          <input
-            {...register("authorImg", { required: "Author image is required" })}
-            className="border border-gray-500 px-3 py-2 rounded-md w-full"
-            placeholder="Paste author image URL or upload"
-          />
-          <input
-            type="file"
-            accept="image/*"
-            onChange={(e) => uploadImage(e, "authorImg", setUploadingAuthorImg)}
-            className="mt-2"
-          />
+          <label className="block text-sm font-medium text-gray-700 mb-1">Author Image <span className="text-red-500">*</span></label>
+          <input {...register("authorImg", { required: "Author image is required" })} placeholder="Paste author image URL" className="border px-3 py-2 rounded w-full" />
+          <input type="file" accept="image/*" onChange={(e) => uploadImage(e, "authorImg", setUploadingAuthorImg)} className="mt-2" />
           {uploadingAuthorImg && <p>Uploading image...</p>}
-          {authorImgPreview && (
-            <img
-              src={authorImgPreview}
-              alt="Author Preview"
-              className="mt-2 max-h-24 object-contain rounded-full"
-            />
-          )}
+          {authorImgPreview && <img src={authorImgPreview} alt="Author Preview" className="mt-2 max-h-24 object-contain rounded-full" />}
         </div>
 
         {/* Author Name */}
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Author Name <span className="text-red-500">*</span>
-          </label>
-          <input
-            {...register("authorName", { required: "Author name is required" })}
-            className="border border-gray-500 px-3 py-2 rounded-md w-full"
-            placeholder="Enter author name"
-          />
-          {errors.authorName && (
-            <p className="text-red-500 text-sm">{errors.authorName.message}</p>
-          )}
+          <label className="block text-sm font-medium text-gray-700 mb-1">Author Name <span className="text-red-500">*</span></label>
+          <input {...register("authorName", { required: "Author name is required" })} placeholder="Enter author name" className="border px-3 py-2 rounded w-full" />
+          {errors.authorName && <p className="text-red-500 text-sm">{errors.authorName.message}</p>}
         </div>
 
-        <button
-          type="submit"
-          className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-        >
-          Save
-        </button>
+        <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition">Save</button>
       </form>
     </div>
   );

@@ -4,7 +4,7 @@ import { DataContext } from '../context/DataContext';
 import LogoutButton from './../auth/LogoutButton';
 
 const ProfileDropdown=()=>{
-  const [open, setOpen] = useState(true);
+  const [open, setOpen] = useState(false);
   const {menu,setMenu,isLoggedIn}=useContext(DataContext)
   const dropdownRef = useRef(null);
   // Close dropdown if clicked outside
