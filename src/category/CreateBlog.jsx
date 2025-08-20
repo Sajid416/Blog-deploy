@@ -1,8 +1,6 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
-import { useQuill } from "react-quilljs";
-import "quill/dist/quill.snow.css";
 import axios from "axios";
 import { DataContext } from "../context/DataContext";
 
@@ -13,18 +11,6 @@ const CreateBlog = () => {
   const { register, setValue, watch, formState: { errors }, reset, handleSubmit } = useForm({
     defaultValues: { details: "" }
   });
-
-  // Quill editor
-  const { quill, quillRef } = useQuill();
-
-  // Sync quill content with react-hook-form
-  useEffect(() => {
-    if (quill) {
-      quill.on("text-change", () => {
-        setValue("details", quill.root.innerHTML, { shouldValidate: true });
-      });
-    }
-  }, [quill, setValue]);
 
   // Image uploads
   const [uploadingBlogImg, setUploadingBlogImg] = useState(false);
@@ -93,7 +79,6 @@ const CreateBlog = () => {
         alert("Blog Added Successfully");
         fetchData();
         reset();
-        if (quill) quill.setContents([]); // clear editor
       }
     } catch (error) {
       if (error.response?.status === 401) {
@@ -143,10 +128,18 @@ const CreateBlog = () => {
           {errors.category && <p className="text-red-500 text-sm">{errors.category.message}</p>}
         </div>
 
-        {/* Details */}
+        {/* Details - Simple Textarea */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">Blog Details <span className="text-red-500">*</span></label>
-          <div ref={quillRef} className="bg-white p-2 rounded border" />
+          <textarea 
+            {...register("details", { required: "Blog details are required" })}
+            rows={10}
+            placeholder="Write your blog content here..."
+            className="border px-3 py-2 rounded w-full resize-vertical"
+          />
+          <p className="text-sm text-gray-500 mt-1">
+            You can use basic HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;br&gt;, etc.
+          </p>
           {errors.details && <p className="text-red-500 text-sm">{errors.details.message}</p>}
         </div>
 
