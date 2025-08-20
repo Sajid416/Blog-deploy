@@ -1,4 +1,4 @@
-import { BrowserRouter, createBrowserRouter, Outlet } from 'react-router-dom';
+import { createBrowserRouter, Outlet } from 'react-router-dom';
 import Home from './Home';
 import App from '../App';
 import About from './About';
@@ -13,7 +13,6 @@ import PrivateRoute from '../context/PrivateRoute';
 import CreateBlog from '../category/CreateBlog';
 import MyBlog from '../category/MyBlog';
 import UpdateBlog from '../category/UpdateBlog';
-import DeleteBlog from '../category/DeleteBlog';
 const router=createBrowserRouter([
     {
         path:"/",
@@ -75,10 +74,6 @@ const router=createBrowserRouter([
                         path:"update/:id",
                         Component:UpdateBlog,
                     },
-                    {
-                        path:"delete/:id",
-                        Component:DeleteBlog,
-                    }
                 ]
             }         
           
