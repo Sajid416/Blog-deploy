@@ -137,9 +137,7 @@ const CreateBlog = () => {
             placeholder="Write your blog content here..."
             className="border px-3 py-2 rounded w-full resize-vertical"
           />
-          <p className="text-sm text-gray-500 mt-1">
-            You can use basic HTML tags like &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;br&gt;, etc.
-          </p>
+         
           {errors.details && <p className="text-red-500 text-sm">{errors.details.message}</p>}
         </div>
 

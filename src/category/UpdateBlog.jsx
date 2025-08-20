@@ -3,16 +3,15 @@ import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { DataContext } from "../context/DataContext";
 import { useContext, useState, useEffect } from "react";
-import { useQuill } from "react-quilljs";
-import "quill/dist/quill.snow.css";
 
 const UpdateBlog = () => {
   const token = localStorage.getItem("token");
   const { id } = useParams();
   const navigate = useNavigate();
   const { fetchData } = useContext(DataContext);
-  const location = useLocation()
+  const location = useLocation();
   const previousPage = location.state?.from || "/blog/myblog";
+
   // React Hook Form
   const {
     register,
@@ -32,18 +31,8 @@ const UpdateBlog = () => {
     },
   });
 
-  // Quill editor
-  const { quill, quillRef } = useQuill();
+  const API = "https://blog-blogapi-service.onrender.com";
 
-  // Sync Quill content with form
-  useEffect(() => {
-    if (quill) {
-      quill.on("text-change", () => {
-        setValue("details", quill.root.innerHTML, { shouldValidate: true });
-      });
-    }
-  }, [quill, setValue]);
- const API="https://blog-blogapi-service.onrender.com"
   // Fetch blog data on mount
   useEffect(() => {
     const fetchBlog = async () => {
@@ -60,17 +49,13 @@ const UpdateBlog = () => {
           authorImg: res.data.authorImg,
           authorName: res.data.authorName,
         });
-
-        if (quill) {
-          quill.root.innerHTML = res.data.details || "";
-        }
       } catch (error) {
         console.error("Error in fetching data", error);
       }
     };
 
     fetchBlog();
-  }, [id, token, reset, quill]);
+  }, [id, token, reset]);
 
   // Image upload states
   const [uploadingBlogImg, setUploadingBlogImg] = useState(false);
@@ -84,22 +69,18 @@ const UpdateBlog = () => {
   const uploadImage = async (e, fieldName, setUploading) => {
     const file = e.target.files[0];
     if (!file) return;
-   const API="https://blog-blogapi-service.onrender.com"
+
     setUploading(true);
     const formData = new FormData();
     formData.append("image", file);
 
     try {
-      const res = await axios.post(
-        `${API}/api/upload`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: token ? `Bearer ${token}` : "",
-          },
-        }
-      );
+      const res = await axios.post(`${API}/api/upload`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: token ? `Bearer ${token}` : "",
+        },
+      });
 
       setValue(fieldName, res.data.url, { shouldValidate: true });
     } catch (error) {
@@ -126,7 +107,7 @@ const UpdateBlog = () => {
       formData.append("authorImg", data.authorImg);
       formData.append("authorName", data.authorName);
       formData.append("details", data.details);
-      const API="https://blog-blogapi-service.onrender.com"
+
       const res = await axios.put(`${API}/api/update/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -137,8 +118,8 @@ const UpdateBlog = () => {
       if (res.status === 200 || res.status === 201) {
         alert("Blog updated successfully");
         fetchData();
-        reset()
-        navigate(previousPage); // redirect if needed
+        reset();
+        navigate(previousPage);
       }
     } catch (error) {
       if (error.response?.status === 401) {
@@ -229,7 +210,11 @@ const UpdateBlog = () => {
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Blog Details <span className="text-red-500">*</span>
           </label>
-          <div ref={quillRef} />
+          <textarea
+            {...register("details", { required: "Blog details are required" })}
+            placeholder="Write your blog here..."
+            className="border border-gray-500 px-3 py-2 rounded-md w-full h-40 resize-none focus:outline-none focus:ring-2 focus:ring-blue-500"
+          />
           {errors.details && (
             <p className="text-red-500 text-sm">{errors.details.message}</p>
           )}

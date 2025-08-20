@@ -2,16 +2,9 @@ import React, { useContext, useState, useEffect, useMemo, useCallback } from "re
 import { DataContext } from "../context/DataContext";
 import { Link } from "react-router-dom";
 import SideBar from "../pages/SideBar";
-import DOMPurify from "dompurify";
 import axios from "axios";
 
-function sanitizeDetails(details) {
-  return DOMPurify.sanitize(details, {
-    ALLOWED_TAGS: ["b", "i", "em", "strong", "p", "ul", "li", "a", "br"],
-    ALLOWED_ATTR: ["href", "target", "rel"],
-    FORBID_ATTR: ["style"],
-  });
-}
+
 
 const SearchBar = React.memo(({ query, setQuery, suggestions, setSuggestions, setSelectedBlogs, selected, setSelected }) => {
   const API="https://blog-blogapi-service.onrender.com"
@@ -195,9 +188,9 @@ const All = () => {
                     {record.title}
                   </h2>
                   <div
-                    className="text-sm text-gray-600 mt-1 line-clamp-2"
-                    dangerouslySetInnerHTML={{ __html: sanitizeDetails(record.details) }}
-                  />
+                    className="text-sm text-gray-600 mt-1 line-clamp-2">
+                    {record.details}
+                  </div>
                   <div className="mt-2 pt-2">
                     <Link to={`/details/${record.id}`}>
                       <button className="px-3 py-1 bg-blue-600 text-white text-xs rounded hover:bg-blue-700 transition">
