@@ -1,14 +1,7 @@
 import React, { useContext } from 'react';
 import { Link } from 'react-router-dom';
 import { DataContext } from './../context/DataContext';
-import DOMPurify from "dompurify";
-function sanitizeDetails(details) {
-  return DOMPurify.sanitize(details, {
-    ALLOWED_TAGS: ["b", "i", "em", "strong", "p", "ul", "li", "a", "br"],
-    ALLOWED_ATTR: ["href", "target", "rel"],
-    FORBID_ATTR: ["style"],
-  });
-}
+
 
 const Home = () => {
   const {apiData,loading}=useContext(DataContext)
@@ -67,8 +60,9 @@ const Home = () => {
                 <p className='text-orange-400 ml-2 text-sm md:text-md'>{item.category}</p>
                 <div
                       className="text-sm text-gray-600 mb-3 line-clamp-2 ml-2"
-                      dangerouslySetInnerHTML={{ __html: sanitizeDetails(item.details) }}
-                    />
+                    >
+                     {item.details} 
+                  </div>
                 <Link
                   to={`/details/${item.id}`}
                   className="text-blue-600 flex justify-center text-sm md:text-md items-center hover:underline font-medium ml-2 pb-4"
