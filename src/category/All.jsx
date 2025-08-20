@@ -210,7 +210,9 @@ const All = () => {
       </div>
 
       {/* Pagination */}
-      <div className="flex justify-center items-center mt-8 gap-2">
+      {
+        selectedBlogs.length>0 && (
+         <div className="flex justify-center items-center mt-8 gap-2">
         <button
           onClick={goToPrevPage}
           disabled={currentPage === 1}
@@ -243,6 +245,8 @@ const All = () => {
           Next
         </button>
       </div>
+        )
+      }
     </div>
   );
 };

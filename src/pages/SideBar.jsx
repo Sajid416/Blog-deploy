@@ -10,7 +10,9 @@ const SideBar = () => {
         <h1 className='font-bold text-xl w-full border-b-1 border-b-gray-500 mb-2'>Latest Blog</h1>
       <div className='flex flex-col gap-3'>
          {
-           apiData.slice(0,5).map((item,index)=>(
+
+          apiData.length>0 && (
+              apiData.slice(0,5).map((item,index)=>(
              <div className='border-b-1 border-b-gray-500' key={item.id}>
                <h1 className='font-semibold text-gray-800'>{item.title}</h1>
                <Link to={`/details/${item.id}`}>
@@ -22,6 +24,7 @@ const SideBar = () => {
              </div>
              
            ))
+          )
          }
       </div>
 
@@ -29,7 +32,8 @@ const SideBar = () => {
        <h1 className='font-bold text-xl pt-5 w-full truncate border-b-1 border-b-gray-500 mb-2'>Popular Blog</h1>
        <div className='flex flex-col gap-3'>
         {
-            apiData.slice(5,10).map((item,index)=>(
+            apiData.length>0 && (
+              apiData.slice(5,10).map((item,index)=>(
                 <div className='border-b-1 border-b-gray-500' key={item.id}>
                <h1 className='font-semibold text-gray-800'>{item.title}</h1>
                <Link to={`/details/${item.id}`}>
@@ -40,6 +44,7 @@ const SideBar = () => {
              
              </div>
             ))
+            )
         }
        </div>
     </div>
